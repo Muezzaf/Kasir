@@ -2,27 +2,46 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KasirQ - Moka Lite</title>
+  <title>KasirQ</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <script>
+    if (!localStorage.getItem("kasir")) {
+      window.location.href = "login.html";
+    }
+  </script>
+
   <div class="container">
     <aside class="sidebar">
       <h2>KasirQ</h2>
       <button id="addProductBtn">+ Tambah Produk</button>
+      <div class="form-tambah" id="formTambahProduk" style="display:none;">
+        <h3>Tambah Produk</h3>
+        <input type="text" id="namaProduk" placeholder="Nama Produk">
+        <input type="number" id="hargaProduk" placeholder="Harga">
+        <select id="kategoriProduk">
+          <option value="Minuman">Minuman</option>
+          <option value="Makanan">Makanan</option>
+          <option value="Snack">Snack</option>
+        </select>
+        <button onclick="simpanProdukBaru()">Simpan</button>
+      </div>
+      <hr style="margin: 20px 0;">
       <ul class="kategori">
-        <li>Refleksi</li>
-        <li>Full Body Massage</li>
-        <li>Other Service</li>
+        <li onclick="filterKategori('all')">📦 Semua</li>
+        <li onclick="filterKategori('Minuman')">🥤 Minuman</li>
+        <li onclick="filterKategori('Makanan')">🍛 Makanan</li>
+        <li onclick="filterKategori('Snack')">🍪 Snack</li>
       </ul>
+      <hr style="margin: 20px 0;">
+      <button id="lihatRiwayatBtn">📜 Riwayat Transaksi</button>
+      <button onclick="logout()">Logout</button>
     </aside>
 
     <main class="product-list">
       <h2>Daftar Produk</h2>
-      <div class="produk-grid" id="productGrid">
-        <!-- Produk dimunculkan lewat JS -->
-      </div>
+      <div class="produk-grid" id="productGrid"></div>
     </main>
 
     <aside class="cart">
@@ -34,6 +53,21 @@
         <button id="bayarBtn">Bayar</button>
       </div>
     </aside>
+  </div>
+
+  <!-- Riwayat -->
+  <div class="riwayat-box" id="riwayatBox" style="display:none;">
+    <h3>Riwayat Transaksi</h3>
+    <div id="riwayatList"></div>
+    <button onclick="exportExcel()">📤 Export Excel</button>
+    <button onclick="tutupRiwayat()">Tutup</button>
+  </div>
+
+  <!-- Struk -->
+  <div class="struk-popup" id="popupStruk" style="display:none;">
+    <div class="struk" id="isiStruk"></div>
+    <button onclick="window.print()">🖨️ Cetak Struk</button>
+    <button onclick="tutupStruk()">Tutup</button>
   </div>
 
   <script src="script.js"></script>

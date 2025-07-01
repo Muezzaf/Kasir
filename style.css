@@ -2,10 +2,21 @@ body {
   font-family: sans-serif;
   padding: 20px;
   background-color: #f2f2f2;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 h1, h2, h3 {
   color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+section {
+  margin-bottom: 30px;
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 ul.kategori {
@@ -14,16 +25,19 @@ ul.kategori {
   display: flex;
   gap: 10px;
   margin-bottom: 10px;
+  flex-wrap: wrap;
 }
 
 ul.kategori li {
-  padding: 5px 10px;
+  padding: 6px 12px;
   background-color: #ddd;
   border-radius: 5px;
   cursor: pointer;
+  transition: 0.2s;
 }
 
-ul.kategori li.active {
+ul.kategori li.active,
+ul.kategori li:hover {
   background-color: #2c3e50;
   color: white;
 }
@@ -40,6 +54,7 @@ ul.kategori li.active {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  text-align: center;
 }
 
 input, select {
@@ -48,6 +63,8 @@ input, select {
   margin-top: 5px;
   margin-bottom: 10px;
   box-sizing: border-box;
+  border-radius: 4px;
+  border: 1px solid #ccc;
 }
 
 button {
@@ -57,6 +74,7 @@ button {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  transition: 0.2s;
 }
 
 button:hover {
@@ -77,10 +95,14 @@ button:hover {
   padding: 20px;
   z-index: 999;
   box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  max-width: 400px;
+  width: 100%;
+  border-radius: 8px;
 }
 
 #popupStruk button {
   margin-top: 15px;
+  width: 100%;
 }
 
 #daftarTerapis {
@@ -95,6 +117,7 @@ button:hover {
   padding: 8px;
   margin-bottom: 5px;
   border-radius: 5px;
+  align-items: center;
 }
 
 #daftarTerapis .terapis-item span {
@@ -109,8 +132,13 @@ button:hover {
   border-radius: 4px;
   cursor: pointer;
   margin-left: 5px;
+  transition: 0.2s;
 }
 
 #daftarTerapis .terapis-item button.delete {
   background-color: #e74c3c;
+}
+
+#daftarTerapis .terapis-item button:hover {
+  opacity: 0.9;
 }

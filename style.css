@@ -1,146 +1,89 @@
 body {
   font-family: sans-serif;
   padding: 20px;
-  background-color: #f2f2f2;
-  max-width: 900px;
-  margin: 0 auto;
+  background: #f8f8f8;
 }
 
 h1, h2, h3 {
   color: #2c3e50;
-  margin-bottom: 10px;
 }
 
-section {
-  margin-bottom: 30px;
-  background: #fff;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-ul.kategori {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
-  flex-wrap: wrap;
-}
-
-ul.kategori li {
-  padding: 6px 12px;
-  background-color: #ddd;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-ul.kategori li.active,
-ul.kategori li:hover {
-  background-color: #2c3e50;
-  color: white;
-}
-
-#productGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.produk-item {
-  background: white;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  text-align: center;
-}
-
-input, select {
-  width: 100%;
+input, select, button {
+  margin: 5px 0;
   padding: 8px;
-  margin-top: 5px;
-  margin-bottom: 10px;
+  font-size: 14px;
+  width: 100%;
   box-sizing: border-box;
-  border-radius: 4px;
-  border: 1px solid #ccc;
 }
 
 button {
-  padding: 8px 12px;
   background-color: #3498db;
   color: white;
   border: none;
-  border-radius: 4px;
   cursor: pointer;
-  transition: 0.2s;
+  transition: background 0.2s ease;
 }
 
 button:hover {
   background-color: #2980b9;
 }
 
-#cartItems div {
-  margin-bottom: 5px;
+.produk-item {
+  background: #fff;
+  border: 1px solid #ccc;
+  margin: 5px;
+  padding: 10px;
+  display: inline-block;
+  width: 180px;
+}
+
+.kategori li {
+  display: inline-block;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.kategori li.active {
+  font-weight: bold;
+  color: #3498db;
+}
+
+#formTambahProduk,
+#formEditTerapis {
+  margin-top: 10px;
+  background: #ecf0f1;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+#cartItems > div,
+#daftarTerapis > div {
+  background: #fff;
+  margin: 5px 0;
+  padding: 10px;
+  border-left: 5px solid #3498db;
+}
+
+.terapis-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 #popupStruk {
   position: fixed;
-  top: 50%;
+  top: 10%;
   left: 50%;
+  transform: translateX(-50%);
   background: white;
-  transform: translate(-50%, -50%);
-  border: 2px solid #333;
   padding: 20px;
-  z-index: 999;
-  box-shadow: 0 0 10px rgba(0,0,0,0.2);
-  max-width: 400px;
-  width: 100%;
-  border-radius: 8px;
+  border: 2px solid #2c3e50;
+  box-shadow: 0 0 10px #aaa;
+  z-index: 1000;
+  width: 300px;
 }
 
-#popupStruk button {
-  margin-top: 15px;
-  width: 100%;
-}
-
-#daftarTerapis {
-  margin-top: 10px;
-}
-
-#daftarTerapis .terapis-item {
-  display: flex;
-  justify-content: space-between;
-  background: #fff;
-  border: 1px solid #ccc;
-  padding: 8px;
-  margin-bottom: 5px;
-  border-radius: 5px;
-  align-items: center;
-}
-
-#daftarTerapis .terapis-item span {
-  flex: 1;
-}
-
-#daftarTerapis .terapis-item button {
-  background-color: #f39c12;
-  color: #fff;
-  border: none;
-  padding: 6px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-left: 5px;
-  transition: 0.2s;
-}
-
-#daftarTerapis .terapis-item button:hover {
-  opacity: 0.9;
-}
-
-.terapis-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+#popupStruk ul {
+  list-style: none;
+  padding: 0;
 }

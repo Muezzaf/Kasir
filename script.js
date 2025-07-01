@@ -1,7 +1,7 @@
 let products = JSON.parse(localStorage.getItem("produk")) || [
-  { id: 1, name: "60 Menit", price: 80.000, kategori: "Refleksi" },
-  { id: 2, name: "60 Menit", price: 100.000, kategori: "Full Body Massage" },
-  { id: 3, name: "Kop/Kerik", price: 50.000, kategori: "Other Service" },
+  { id: 1, name: "Refleksi 60 Menit", price: 70000, kategori: "Refleksi" },
+  { id: 2, name: "Full Body Massage 90 Menit", price: 120000, kategori: "Full Body Massage" },
+  { id: 3, name: "Totok Wajah", price: 50000, kategori: "Other Service" },
 ];
 
 const cart = [];
@@ -16,7 +16,7 @@ function renderProducts() {
     item.className = "produk-item";
     item.innerHTML = `
       <h4>${prod.name}</h4>
-      <p>Rp.${prod.price}</p>
+      <p>Rp ${prod.price}</p>
       <small>${prod.kategori}</small><br>
       <button class="edit-btn" onclick="editProduk(${prod.id})">Edit</button>
       <button class="hapus-btn" onclick="hapusProduk(${prod.id})">Hapus</button>
@@ -72,7 +72,7 @@ function simpanProdukBaru() {
 
 function editProduk(id) {
   const produk = products.find(p => p.id === id);
-  const namaBaru = prompt("Ubah nama produk:", produk.name);
+  const namaBaru = prompt("Ubah nama layanan:", produk.name);
   const hargaBaru = prompt("Ubah harga:", produk.price);
   if (namaBaru && hargaBaru && !isNaN(parseInt(hargaBaru))) {
     produk.name = namaBaru;
@@ -85,7 +85,7 @@ function editProduk(id) {
 }
 
 function hapusProduk(id) {
-  if (confirm("Yakin hapus produk ini?")) {
+  if (confirm("Yakin hapus layanan ini?")) {
     const index = products.findIndex(p => p.id === id);
     if (index > -1) {
       products.splice(index, 1);
@@ -109,23 +109,43 @@ document.getElementById("addProductBtn").addEventListener("click", () => {
 });
 
 document.getElementById("bayarBtn").addEventListener("click", () => {
+  const nama = document.getElementById("namaPelanggan").value.trim();
+  const terapis = document.getElementById("namaTerapis").value.trim();
   const total = cart.reduce((a, b) => a + b.price, 0);
-  if (cart.length === 0) return alert("Keranjang kosong!");
-  simpanTransaksi(cart, total);
-  tampilkanStruk(cart, total);
+  const komisi = Math.floor(0.4 * total); // fix 40% komisi
+
+  if (!nama || !terapis) return alert("Isi nama pelanggan & terapis dulu ya.");
+  if (cart.length === 0) return alert("Keranjang masih kosong!");
+
+  simpanTransaksi(nama, terapis, cart, total, komisi);
+  tampilkanStruk(terapis, total);
   cart.length = 0;
   updateCart();
+  document.getElementById("namaPelanggan").value = "";
+  document.getElementById("namaTerapis").value = "";
 });
 
-function simpanTransaksi(keranjang, total) {
+function simpanTransaksi(nama, terapis, keranjang, total, komisi) {
   const transaksi = {
     waktu: new Date().toLocaleString("id-ID"),
-    barang: [...keranjang],
-    total
+    pelanggan: nama,
+    terapis,
+    layanan: [...keranjang],
+    total,
+    komisi
   };
   let riwayat = JSON.parse(localStorage.getItem("riwayat")) || [];
   riwayat.push(transaksi);
   localStorage.setItem("riwayat", JSON.stringify(riwayat));
+}
+
+function tampilkanStruk(terapis, total) {
+  const container = document.getElementById("isiStruk");
+  let html = `<h3>Struk Layanan</h3>`;
+  html += `<p>🧍‍♂️ Terapis: ${terapis}</p>`;
+  html += `<p>💰 Total: Rp ${total}</p>`;
+  container.innerHTML = html;
+  document.getElementById("popupStruk").style.display = "block";
 }
 
 document.getElementById("lihatRiwayatBtn").addEventListener("click", tampilkanRiwayat);
@@ -139,8 +159,8 @@ function tampilkanRiwayat() {
     list.innerHTML = "<p>Belum ada transaksi.</p>";
   } else {
     data.reverse().forEach(tx => {
-      const items = tx.barang.map(b => `${b.name} (Rp ${b.price})`).join(", ");
-      list.innerHTML += `<p><strong>${tx.waktu}</strong><br>${items}<br><strong>Total:</strong> Rp ${tx.total}</p>`;
+      const items = tx.layanan.map(b => `${b.name} (Rp ${b.price})`).join(", ");
+      list.innerHTML += `<p><strong>${tx.waktu}</strong><br>👤 ${tx.pelanggan}<br>🧍‍♂️ ${tx.terapis}<br>${items}<br><strong>Total:</strong> Rp ${tx.total} - Komisi: Rp ${tx.komisi}</p>`;
     });
   }
   box.style.display = "block";
@@ -149,29 +169,17 @@ function tampilkanRiwayat() {
 function exportExcel() {
   const riwayat = JSON.parse(localStorage.getItem("riwayat")) || [];
   if (riwayat.length === 0) return alert("Belum ada transaksi!");
-  let html = `<table border='1'><tr><th>Waktu</th><th>Barang</th><th>Total</th></tr>`;
+  let html = `<table border='1'><tr><th>Waktu</th><th>Pelanggan</th><th>Terapis</th><th>Layanan</th><th>Total</th><th>Komisi</th></tr>`;
   riwayat.forEach(tx => {
-    const items = tx.barang.map(b => `${b.name} (Rp ${b.price})`).join(", ");
-    html += `<tr><td>${tx.waktu}</td><td>${items}</td><td>Rp ${tx.total}</td></tr>`;
+    const items = tx.layanan.map(b => `${b.name} (Rp ${b.price})`).join(", ");
+    html += `<tr><td>${tx.waktu}</td><td>${tx.pelanggan}</td><td>${tx.terapis}</td><td>${items}</td><td>Rp ${tx.total}</td><td>Rp ${tx.komisi}</td></tr>`;
   });
   html += "</table>";
   const blob = new Blob([html], { type: "application/vnd.ms-excel" });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
-  link.download = "riwayat-transaksi.xls";
+  link.download = "riwayat-kasir-refleksi.xls";
   link.click();
-}
-
-function tampilkanStruk(items, total) {
-  const container = document.getElementById("isiStruk");
-  const waktu = new Date().toLocaleString("id-ID");
-  let html = `<h3>Struk KasirQ</h3><p>${waktu}</p><hr>`;
-  items.forEach(item => {
-    html += `<p>${item.name} - Rp ${item.price}</p>`;
-  });
-  html += `<hr><p><strong>Total:</strong> Rp ${total}</p>`;
-  container.innerHTML = html;
-  document.getElementById("popupStruk").style.display = "block";
 }
 
 function tutupStruk() {
@@ -185,7 +193,7 @@ function tutupRiwayat() {
 function hapusSemuaRiwayat() {
   if (confirm("Yakin mau hapus semua riwayat transaksi?")) {
     localStorage.removeItem("riwayat");
-    tampilkanRiwayat(); // langsung render ulang kosong
+    tampilkanRiwayat();
   }
 }
 

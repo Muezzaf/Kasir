@@ -135,10 +135,12 @@ button:hover {
   transition: 0.2s;
 }
 
-#daftarTerapis .terapis-item button.delete {
-  background-color: #e74c3c;
-}
-
 #daftarTerapis .terapis-item button:hover {
   opacity: 0.9;
+}
+
+.terapis-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }

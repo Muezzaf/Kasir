@@ -1,5 +1,5 @@
 const products = [
-  { id: 1, name: "60 Menit", price: 5000 },
+  { id: 1, name: "60 Menit", price: Rp80000 },
   { id: 2, name: "Nasi Goreng", price: 15000 },
   { id: 3, name: "Keripik", price: 7000 },
 ];

@@ -128,7 +128,9 @@ function simpanTransaksi(keranjang, total) {
   localStorage.setItem("riwayat", JSON.stringify(riwayat));
 }
 
-document.getElementById("lihatRiwayatBtn").addEventListener("click", () => {
+document.getElementById("lihatRiwayatBtn").addEventListener("click", tampilkanRiwayat);
+
+function tampilkanRiwayat() {
   const box = document.getElementById("riwayatBox");
   const list = document.getElementById("riwayatList");
   const data = JSON.parse(localStorage.getItem("riwayat")) || [];
@@ -142,7 +144,7 @@ document.getElementById("lihatRiwayatBtn").addEventListener("click", () => {
     });
   }
   box.style.display = "block";
-});
+}
 
 function exportExcel() {
   const riwayat = JSON.parse(localStorage.getItem("riwayat")) || [];
@@ -183,7 +185,7 @@ function tutupRiwayat() {
 function hapusSemuaRiwayat() {
   if (confirm("Yakin mau hapus semua riwayat transaksi?")) {
     localStorage.removeItem("riwayat");
-    document.getElementById("riwayatList").innerHTML = "<p>Belum ada transaksi.</p>";
+    tampilkanRiwayat(); // langsung render ulang kosong
   }
 }
 

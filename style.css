@@ -1,9 +1,9 @@
-/* Moka POS Inspired Layout Style */
+/* MOKSA POS Inspired Layout Style */
 body {
-  font-family: 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Poppins', 'Segoe UI', Roboto, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f4f6f8;
+  background-color: #f5f7fa;
   color: #333;
 }
 
@@ -11,9 +11,10 @@ h1 {
   background-color: #ffffff;
   padding: 20px;
   margin: 0;
-  font-size: 24px;
+  font-size: 28px;
   text-align: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  color: #2c3e50;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
 main {
@@ -31,43 +32,49 @@ section {
   background: #fff;
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.05);
 }
 
 input, select, button {
-  margin: 8px 0;
-  padding: 10px;
-  font-size: 14px;
+  margin: 10px 0;
+  padding: 12px;
+  font-size: 15px;
   width: 100%;
   box-sizing: border-box;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  border: 1px solid #d0d7de;
+  border-radius: 8px;
 }
 
 button {
-  background-color: #2d9cdb;
+  background-color: #27ae60;
   color: white;
   border: none;
   cursor: pointer;
   transition: background 0.3s ease;
-  font-weight: 500;
+  font-weight: 600;
+  border-radius: 8px;
 }
 
 button:hover {
-  background-color: #1c84c6;
+  background-color: #1e874b;
 }
 
 .produk-item {
   background: #ffffff;
-  border: 1px solid #ddd;
+  border: 1px solid #e1e4e8;
   margin: 10px 5px;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.06);
   width: calc(33.333% - 20px);
   display: inline-block;
   vertical-align: top;
   box-sizing: border-box;
+  transition: transform 0.2s ease;
+}
+
+.produk-item:hover {
+  transform: translateY(-3px);
 }
 
 .kategori {
@@ -80,16 +87,16 @@ button:hover {
 }
 
 .kategori li {
-  padding: 8px 16px;
+  padding: 10px 18px;
   background: #e0e0e0;
-  border-radius: 20px;
+  border-radius: 30px;
   cursor: pointer;
   font-weight: 500;
-  transition: 0.2s;
+  transition: 0.3s;
 }
 
 .kategori li.active {
-  background: #2d9cdb;
+  background: #27ae60;
   color: white;
 }
 
@@ -97,17 +104,17 @@ button:hover {
 #formEditTerapis {
   margin-top: 10px;
   background: #f1f1f1;
-  padding: 15px;
-  border-radius: 8px;
+  padding: 20px;
+  border-radius: 10px;
 }
 
 #cartItems > div,
 #daftarTerapis > div {
-  background: #fafafa;
-  margin: 8px 0;
-  padding: 12px;
-  border-left: 4px solid #2d9cdb;
-  border-radius: 6px;
+  background: #f9f9f9;
+  margin: 10px 0;
+  padding: 14px;
+  border-left: 5px solid #27ae60;
+  border-radius: 8px;
 }
 
 .terapis-item {
@@ -122,11 +129,11 @@ button:hover {
   left: 50%;
   transform: translateX(-50%);
   background: white;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.2);
   z-index: 1000;
-  width: 300px;
+  width: 320px;
   max-width: 90%;
 }
 
@@ -138,24 +145,24 @@ button:hover {
 label {
   font-weight: 600;
   display: block;
-  margin-top: 10px;
-  margin-bottom: 5px;
+  margin-top: 12px;
+  margin-bottom: 6px;
 }
 
 #riwayatBox {
-  margin-top: 10px;
-  background: #f9f9f9;
-  padding: 15px;
-  border-radius: 8px;
+  margin-top: 12px;
+  background: #fcfcfc;
+  padding: 18px;
+  border-radius: 10px;
 }
 
 #riwayatList > div {
-  padding: 10px;
-  margin: 8px 0;
+  padding: 12px;
+  margin: 10px 0;
   background: #ffffff;
-  border-left: 4px solid #2d9cdb;
-  border-radius: 6px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  border-left: 5px solid #27ae60;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
 @media screen and (max-width: 768px) {

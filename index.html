@@ -2,76 +2,69 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Kasir Refleksi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aplikasi Kasir Refleksi</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <script>
-    if (!localStorage.getItem("kasir")) {
-      window.location.href = "login.html";
-    }
-  </script>
+  <h1>Kasir Refleksi</h1>
 
-  <div class="container">
-    <aside class="sidebar">
-      <h2>Kasir Refleksi</h2>
-      <button id="addProductBtn">+ Tambah Layanan</button>
-      <div class="form-tambah" id="formTambahProduk" style="display:none;">
-        <h3>Tambah Layanan</h3>
-        <input type="text" id="namaProduk" placeholder="Nama Layanan">
-        <input type="number" id="hargaProduk" placeholder="Harga">
-        <select id="kategoriProduk">
-          <option value="Refleksi">Refleksi</option>
-          <option value="Full Body Massage">Full Body Massage</option>
-          <option value="Other Service">Other Service</option>
-        </select>
-        <button onclick="simpanProdukBaru()">Simpan</button>
-      </div>
-      <hr style="margin: 20px 0;">
-      <ul class="kategori">
-        <li onclick="filterKategori('all')">📦 Semua</li>
-        <li onclick="filterKategori('Refleksi')">🦶 Refleksi</li>
-        <li onclick="filterKategori('Full Body Massage')">💆 Full Body</li>
-        <li onclick="filterKategori('Other Service')">🛠️ Lainnya</li>
-      </ul>
-      <hr style="margin: 20px 0;">
-      <button id="lihatRiwayatBtn">📜 Riwayat Transaksi</button>
-      <button onclick="logout()">Logout</button>
-    </aside>
+  <section>
+    <h2>Layanan</h2>
+    <ul class="kategori">
+      <li onclick="filterKategori('all')" class="active">Semua</li>
+      <li onclick="filterKategori('Refleksi')">Refleksi</li>
+      <li onclick="filterKategori('Full Body Massage')">Full Body Massage</li>
+      <li onclick="filterKategori('Other Service')">Other Service</li>
+    </ul>
+    <div id="productGrid"></div>
+    <button id="addProductBtn" onclick="document.getElementById('formTambahProduk').style.display='block'">Tambah Layanan</button>
+    <div id="formTambahProduk" style="display: none;">
+      <input type="text" id="namaProduk" placeholder="Nama Layanan">
+      <input type="number" id="hargaProduk" placeholder="Harga">
+      <select id="kategoriProduk">
+        <option value="Refleksi">Refleksi</option>
+        <option value="Full Body Massage">Full Body Massage</option>
+        <option value="Other Service">Other Service</option>
+      </select>
+      <button onclick="simpanProdukBaru()">Simpan</button>
+    </div>
+  </section>
 
-    <main class="product-list">
-      <h2>Daftar Layanan</h2>
-      <div class="produk-grid" id="productGrid"></div>
-    </main>
+  <section>
+    <h2>Keranjang</h2>
+    <div id="cartItems"></div>
+    <h3>Total: <span id="totalHarga">Rp0</span></h3>
+    <label for="namaTerapis">Terapis</label>
+    <select id="namaTerapis"></select>
 
-    <aside class="cart">
-      <h2>Keranjang</h2>
-      <input type="text" id="namaPelanggan" placeholder="Nama Pelanggan"><br>
-      <input type="text" id="namaTerapis" placeholder="Nama Terapis"><br>
-      <input type="text" id="durasiLayanan" placeholder="Durasi (misal: 60 Menit)"><br><br>
-      <div id="cartItems"></div>
-      <hr>
-      <div class="total">
-        <p>Total: <span id="totalHarga">Rp 0</span></p>
-        <button id="bayarBtn">Bayar</button>
-      </div>
-    </aside>
-  </div>
+    <label for="namaPelanggan">Nama Pelanggan</label>
+    <input type="text" id="namaPelanggan" placeholder="Nama pelanggan">
 
-  <!-- Popup Riwayat -->
-  <div class="riwayat-box" id="riwayatBox" style="display:none;">
-    <h3>Riwayat Transaksi</h3>
-    <div id="riwayatList"></div>
-    <button onclick="exportExcel()">📤 Export Excel</button>
-    <button onclick="hapusSemuaRiwayat()">🗑️ Hapus Semua Riwayat</button>
-    <button onclick="tutupRiwayat()">Tutup</button>
-  </div>
+    <button id="bayarBtn">Bayar</button>
+  </section>
 
-  <!-- Popup Struk -->
-  <div class="struk-popup" id="popupStruk" style="display:none;">
-    <div class="struk" id="isiStruk"></div>
-    <button onclick="window.print()">🖨️ Cetak Struk</button>
-    <button onclick="tutupStruk()">Tutup</button>
+  <section>
+    <h2>Kelola Terapis</h2>
+    <input type="text" id="namaTerapisBaru" placeholder="Nama Terapis">
+    <input type="number" id="komisiTerapisBaru" placeholder="Komisi (%)">
+    <button onclick="simpanTerapisBaru()">Tambah Terapis</button>
+  </section>
+
+  <section>
+    <h2>Riwayat</h2>
+    <button id="lihatRiwayatBtn">Lihat Riwayat</button>
+    <button onclick="hapusSemuaRiwayat()">Hapus Semua</button>
+    <button onclick="exportExcel()">Export ke Excel</button>
+    <div id="riwayatBox" style="display: none;">
+      <div id="riwayatList"></div>
+      <button onclick="tutupRiwayat()">Tutup</button>
+    </div>
+  </section>
+
+  <div id="popupStruk" style="display:none;">
+    <div id="isiStruk"></div>
+    <button onclick="tutupStruk()">Tutup Struk</button>
   </div>
 
   <script src="script.js"></script>

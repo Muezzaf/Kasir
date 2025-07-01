@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Login Kasir</title>
+  <style>
+    body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #ecf0f1; }
+    .login-box { background: white; padding: 30px; box-shadow: 0 0 10px #ccc; border-radius: 10px; }
+    input { width: 100%; padding: 10px; margin-bottom: 15px; }
+    button { padding: 10px; background: #2ecc71; color: white; border: none; width: 100%; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h2>Login Kasir</h2>
+    <input type="text" id="username" placeholder="Nama Kasir">
+    <button onclick="login()">Login</button>
+  </div>
+
+  <script>
+    if (localStorage.getItem("kasir")) {
+      window.location.href = "index.html";
+    }
+
+    function login() {
+      const user = document.getElementById("username").value.trim();
+      if (user) {
+        localStorage.setItem("kasir", user);
+        window.location.href = "index.html";
+      } else {
+        alert("Isi nama dulu bro!");
+      }
+    }
+  </script>
+</body>
+</html>

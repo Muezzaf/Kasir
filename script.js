@@ -1,228 +1,190 @@
-// === Data ===
-let terapisList = JSON.parse(localStorage.getItem('terapisList')) || [];
-let produkList = JSON.parse(localStorage.getItem('produkList')) || [];
+// Data awal
+let produk = [];
 let keranjang = [];
-let riwayat = JSON.parse(localStorage.getItem('riwayatTransaksi')) || [];
+let terapis = JSON.parse(localStorage.getItem("terapis")) || [];
+let riwayat = JSON.parse(localStorage.getItem("riwayat")) || [];
+let selectedTerapis = "";
 
-// === Produk ===
-function simpanProdukBaru() {
-  const nama = document.getElementById("namaProduk").value;
-  const harga = parseFloat(document.getElementById("hargaProduk").value);
-  const kategori = document.getElementById("kategoriProduk").value;
-  if (!nama || isNaN(harga)) return alert("Isi nama dan harga layanan dengan benar");
+// DOM
+const produkList = document.getElementById("produkList");
+const kategoriList = document.getElementById("kategoriList");
+const cartItems = document.getElementById("cartItems");
+const terapisSelect = document.getElementById("terapisSelect");
+const daftarTerapis = document.getElementById("daftarTerapis");
+const riwayatList = document.getElementById("riwayatList");
+const strukList = document.getElementById("strukList");
+const totalBayarStruk = document.getElementById("totalBayarStruk");
 
-  produkList.push({ nama, harga, kategori });
-  localStorage.setItem("produkList", JSON.stringify(produkList));
-  document.getElementById("namaProduk").value = "";
-  document.getElementById("hargaProduk").value = "";
+// Inisialisasi
+renderTerapis();
+renderKeranjang();
+renderRiwayat();
+
+// Tambah Produk
+const formTambahProduk = document.getElementById("formTambahProduk");
+formTambahProduk.addEventListener("submit", function(e) {
+  e.preventDefault();
+  const nama = document.getElementById("produkNama").value;
+  const harga = parseInt(document.getElementById("produkHarga").value);
+  const kategori = document.getElementById("produkKategori").value;
+  produk.push({ nama, harga, kategori });
+  document.getElementById("produkNama").value = "";
+  document.getElementById("produkHarga").value = "";
   renderProduk();
-}
+  renderKategori();
+});
 
-function renderProduk(kategori = 'all') {
-  const grid = document.getElementById("productGrid");
-  if (!grid) return;
-  grid.innerHTML = "";
-  let list = kategori === 'all' ? produkList : produkList.filter(p => p.kategori === kategori);
-
-  list.forEach((produk, i) => {
+function renderProduk(kategori = "") {
+  produkList.innerHTML = "";
+  produk.filter(p => !kategori || p.kategori === kategori).forEach((p, index) => {
     const item = document.createElement("div");
     item.className = "produk-item";
     item.innerHTML = `
-      <strong>${produk.nama}</strong><br>
-      <small>${produk.kategori}</small><br>
-      <span>Rp${produk.harga.toLocaleString("id-ID")}</span><br>
-      <button onclick="tambahKeKeranjang(${i})">Pilih</button>
+      <strong>${p.nama}</strong><br>
+      Rp${p.harga.toLocaleString()}<br>
+      <button onclick="tambahKeKeranjang(${index})">+</button>
     `;
-    grid.appendChild(item);
+    produkList.appendChild(item);
+  });
+}
+
+function renderKategori() {
+  const kategoriUnik = [...new Set(produk.map(p => p.kategori))];
+  kategoriList.innerHTML = "";
+  kategoriUnik.forEach(kat => {
+    const li = document.createElement("li");
+    li.textContent = kat;
+    li.onclick = () => renderProduk(kat);
+    kategoriList.appendChild(li);
   });
 }
 
 function tambahKeKeranjang(index) {
-  keranjang.push(produkList[index]);
+  keranjang.push(produk[index]);
   renderKeranjang();
 }
 
 function renderKeranjang() {
-  const box = document.getElementById("cartItems");
-  box.innerHTML = "";
-  let total = 0;
+  cartItems.innerHTML = "";
   keranjang.forEach((item, i) => {
-    total += item.harga;
     const div = document.createElement("div");
-    div.innerHTML = `${item.nama} - Rp${item.harga.toLocaleString("id-ID")} <button onclick="hapusItemKeranjang(${i})">❌</button>`;
-    box.appendChild(div);
+    div.innerHTML = `${item.nama} - Rp${item.harga.toLocaleString()} <button onclick="hapusItem(${i})">x</button>`;
+    cartItems.appendChild(div);
   });
-  document.getElementById("totalHarga").textContent = `Rp${total.toLocaleString("id-ID")}`;
+  renderTerapisDropdown();
 }
 
-function hapusItemKeranjang(i) {
-  keranjang.splice(i, 1);
+function hapusItem(index) {
+  keranjang.splice(index, 1);
   renderKeranjang();
 }
 
-// === Terapis ===
-function simpanTerapisBaru() {
-  const nama = document.getElementById("namaTerapisBaru").value;
-  const komisi = parseFloat(document.getElementById("komisiTerapisBaru").value);
-  if (!nama || isNaN(komisi)) return alert("Isi nama dan komisi dengan benar");
-
-  terapisList.push({ nama, komisi });
-  localStorage.setItem("terapisList", JSON.stringify(terapisList));
-  document.getElementById("namaTerapisBaru").value = "";
-  document.getElementById("komisiTerapisBaru").value = "";
-  renderTerapis();
-  renderDropdownTerapis();
-}
-
-function renderTerapis() {
-  const box = document.getElementById("daftarTerapis");
-  if (!box) return;
-  box.innerHTML = "";
-  terapisList.forEach((terapis, index) => {
-    const item = document.createElement("div");
-    item.className = "terapis-item";
-    item.innerHTML = `
-      <span>${terapis.nama} - ${terapis.komisi}%</span>
-      <div>
-        <button onclick="editTerapis(${index})">Edit</button>
-        <button onclick="hapusTerapis(${index})" style="background:#e74c3c">Hapus</button>
-      </div>
-    `;
-    box.appendChild(item);
+function renderTerapisDropdown() {
+  terapisSelect.innerHTML = "";
+  terapis.forEach(t => {
+    const opt = document.createElement("option");
+    opt.value = t.nama;
+    opt.textContent = t.nama;
+    terapisSelect.appendChild(opt);
   });
 }
 
-function renderDropdownTerapis() {
-  const select = document.getElementById("namaTerapis");
-  if (!select) return;
-  select.innerHTML = "<option value=''>Pilih Terapis</option>";
-  terapisList.forEach((t, i) => {
-    const opt = document.createElement("option");
-    opt.value = i;
-    opt.textContent = t.nama;
-    select.appendChild(opt);
+// Tambah/Edit Terapis
+const formEditTerapis = document.getElementById("formEditTerapis");
+formEditTerapis.addEventListener("submit", function(e) {
+  e.preventDefault();
+  const nama = document.getElementById("terapisNama").value;
+  const komisi = parseInt(document.getElementById("terapisKomisi").value);
+  const existing = terapis.find(t => t.nama === nama);
+  if (existing) existing.komisi = komisi;
+  else terapis.push({ nama, komisi });
+  localStorage.setItem("terapis", JSON.stringify(terapis));
+  document.getElementById("terapisNama").value = "";
+  document.getElementById("terapisKomisi").value = "";
+  renderTerapis();
+  renderTerapisDropdown();
+});
+
+function renderTerapis() {
+  daftarTerapis.innerHTML = "";
+  terapis.forEach((t, i) => {
+    const div = document.createElement("div");
+    div.className = "terapis-item";
+    div.innerHTML = `
+      <span>${t.nama} (${t.komisi}%)</span>
+      <div>
+        <button onclick="editTerapis(${i})">Edit</button>
+        <button onclick="hapusTerapis(${i})">Hapus</button>
+      </div>
+    `;
+    daftarTerapis.appendChild(div);
   });
 }
 
 function editTerapis(index) {
-  const terapis = terapisList[index];
-  const nama = prompt("Edit nama terapis:", terapis.nama);
-  const komisi = prompt("Edit komisi (%):", terapis.komisi);
-  if (nama && !isNaN(parseFloat(komisi))) {
-    terapisList[index] = { nama, komisi: parseFloat(komisi) };
-    localStorage.setItem("terapisList", JSON.stringify(terapisList));
-    renderTerapis();
-    renderDropdownTerapis();
-  }
+  const t = terapis[index];
+  document.getElementById("terapisNama").value = t.nama;
+  document.getElementById("terapisKomisi").value = t.komisi;
 }
 
 function hapusTerapis(index) {
-  if (confirm("Hapus terapis ini?")) {
-    terapisList.splice(index, 1);
-    localStorage.setItem("terapisList", JSON.stringify(terapisList));
-    renderTerapis();
-    renderDropdownTerapis();
-  }
+  terapis.splice(index, 1);
+  localStorage.setItem("terapis", JSON.stringify(terapis));
+  renderTerapis();
+  renderTerapisDropdown();
 }
 
-function toggleFormEditTerapis() {
-  const form = document.getElementById("formEditTerapis");
-  if (form) form.style.display = form.style.display === "none" ? "block" : "none";
-}
+function selesaiTransaksi() {
+  if (!keranjang.length || !terapisSelect.value) return alert("Keranjang atau Terapis kosong!");
+  const total = keranjang.reduce((sum, i) => sum + i.harga, 0);
+  const namaTerapis = terapisSelect.value;
+  const t = terapis.find(t => t.nama === namaTerapis);
+  const komisi = t ? Math.round(total * t.komisi / 100) : 0;
 
-// === Bayar ===
-document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("bayarBtn")?.addEventListener("click", () => {
-    const pelanggan = document.getElementById("namaPelanggan").value;
-    const indexTerapis = document.getElementById("namaTerapis").value;
-    if (!pelanggan || keranjang.length === 0 || indexTerapis === '') return alert("Lengkapi data terlebih dahulu");
-
-    const terapis = terapisList[indexTerapis];
-    const total = keranjang.reduce((acc, item) => acc + item.harga, 0);
-
-    const transaksi = {
-      tanggal: new Date().toLocaleString("id-ID"),
-      pelanggan,
-      terapis: terapis.nama,
-      komisi: (terapis.komisi / 100) * total,
-      total,
-      layanan: [...keranjang]
-    };
-
-    riwayat.push(transaksi);
-    localStorage.setItem("riwayatTransaksi", JSON.stringify(riwayat));
-    keranjang = [];
-    renderKeranjang();
-    document.getElementById("namaPelanggan").value = "";
-    cetakStruk(transaksi);
-  });
-});
-
-function cetakStruk(data) {
-  const box = document.getElementById("isiStruk");
-  if (!box) return;
-  box.innerHTML = `
-    <h3>STRUK PEMBAYARAN</h3>
-    <p>${data.tanggal}</p>
-    <p>Nama Terapis: ${data.terapis}</p>
-    <ul>
-      ${data.layanan.map(item => `<li>${item.nama} - Rp${item.harga.toLocaleString("id-ID")}</li>`).join('')}
-    </ul>
-    <strong>Total: Rp${data.total.toLocaleString("id-ID")}</strong>
-  `;
+  // Tampilkan struk
+  strukList.innerHTML = `<li><strong>${namaTerapis}</strong> - Rp${total.toLocaleString()}</li>`;
+  totalBayarStruk.textContent = `Total Bayar: Rp${total.toLocaleString()}`;
   document.getElementById("popupStruk").style.display = "block";
+
+  // Simpan riwayat
+  riwayat.push({ namaTerapis, total });
+  localStorage.setItem("riwayat", JSON.stringify(riwayat));
+  keranjang = [];
+  renderKeranjang();
+  renderRiwayat();
 }
 
 function tutupStruk() {
   document.getElementById("popupStruk").style.display = "none";
 }
 
-// === Filter ===
-function filterKategori(kat) {
-  document.querySelectorAll(".kategori li").forEach(li => li.classList.remove("active"));
-  event.target.classList.add("active");
-  renderProduk(kat);
-}
-
-// === Riwayat ===
-document.addEventListener("DOMContentLoaded", () => {
-  renderTerapis();
-  renderDropdownTerapis();
-  renderProduk();
-
-  document.getElementById("lihatRiwayatBtn")?.addEventListener("click", () => {
-    const box = document.getElementById("riwayatList");
-    if (!box) return;
-    document.getElementById("riwayatBox").style.display = "block";
-    box.innerHTML = riwayat.map(r => `
-      <div>
-        <strong>${r.tanggal}</strong> - ${r.pelanggan}<br>
-        Terapis: ${r.terapis} - Total: Rp${r.total.toLocaleString("id-ID")}
-      </div>
-    `).join('');
+function renderRiwayat() {
+  riwayatList.innerHTML = "";
+  riwayat.forEach(r => {
+    const div = document.createElement("div");
+    div.textContent = `${r.namaTerapis} - Rp${r.total.toLocaleString()}`;
+    riwayatList.appendChild(div);
   });
-});
-
-function tutupRiwayat() {
-  document.getElementById("riwayatBox").style.display = "none";
 }
 
-function hapusSemuaRiwayat() {
-  if (confirm("Hapus semua riwayat?")) {
+function hapusSemuaTransaksi() {
+  if (confirm("Yakin hapus semua riwayat?")) {
+    localStorage.removeItem("riwayat");
     riwayat = [];
-    localStorage.setItem("riwayatTransaksi", JSON.stringify(riwayat));
-    document.getElementById("riwayatList").innerHTML = "";
+    renderRiwayat();
   }
 }
 
 function exportExcel() {
-  let csv = "Tanggal,Pelanggan,Terapis,Total\n";
+  let csv = "Terapis,Total\n";
   riwayat.forEach(r => {
-    csv += `${r.tanggal},${r.pelanggan},${r.terapis},${r.total}\n`;
+    csv += `${r.namaTerapis},${r.total}\n`;
   });
-  const blob = new Blob([csv], { type: 'text/csv' });
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = 'riwayat-transaksi.csv';
-  link.click();
+  const blob = new Blob([csv], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "laporan_kasir.csv";
+  a.click();
+  URL.revokeObjectURL(url);
 }

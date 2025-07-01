@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Aplikasi Kasir Refleksi</title>
+  <title>Kasir Refleksi</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -18,10 +18,10 @@
       <li onclick="filterKategori('Other Service')">Other Service</li>
     </ul>
     <div id="productGrid"></div>
-    <button id="addProductBtn" onclick="document.getElementById('formTambahProduk').style.display='block'">Tambah Layanan</button>
-    <div id="formTambahProduk" style="display: none;">
+    <button onclick="document.getElementById('formTambahProduk').style.display='block'">Tambah Layanan</button>
+    <div id="formTambahProduk" style="display:none;">
       <input type="text" id="namaProduk" placeholder="Nama Layanan" />
-      <input type="number" id="hargaProduk" placeholder="Harga" />
+      <input type="number" id="hargaProduk" placeholder="Harga (angka saja)" />
       <select id="kategoriProduk">
         <option value="Refleksi">Refleksi</option>
         <option value="Full Body Massage">Full Body Massage</option>
@@ -47,7 +47,7 @@
   <section>
     <h2>Kelola Terapis</h2>
     <button onclick="toggleFormEditTerapis()">Kelola Terapis</button>
-    <div id="formEditTerapis" style="display:none; margin-top:10px;">
+    <div id="formEditTerapis" style="display:none;">
       <input type="text" id="namaTerapisBaru" placeholder="Nama Terapis">
       <input type="number" id="komisiTerapisBaru" placeholder="Komisi (%)">
       <button onclick="simpanTerapisBaru()">Tambah Terapis</button>

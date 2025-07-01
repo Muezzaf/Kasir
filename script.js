@@ -236,3 +236,39 @@ function logout() {
   localStorage.removeItem("kasir");
   window.location.href = "login.html";
 }
+
+function renderTerapisList() {
+  const daftar = document.getElementById("daftarTerapis");
+  daftar.innerHTML = "";
+  dataTerapis.forEach((t, index) => {
+    const div = document.createElement("div");
+    div.className = "terapis-item";
+    div.innerHTML = `
+      <span>${t.nama} - ${Math.round(t.komisi * 100)}%</span>
+      <button class="edit" onclick="editTerapis(${index})">Edit</button>
+      <button onclick="hapusTerapis(${index})">Hapus</button>
+    `;
+    daftar.appendChild(div);
+  });
+}
+
+function editTerapis(index) {
+  const namaBaru = prompt("Nama baru:", dataTerapis[index].nama);
+  const komisiBaru = prompt("Komisi baru (%)", Math.round(dataTerapis[index].komisi * 100));
+  if (namaBaru && komisiBaru && !isNaN(komisiBaru)) {
+    dataTerapis[index].nama = namaBaru;
+    dataTerapis[index].komisi = parseFloat(komisiBaru) / 100;
+    localStorage.setItem("terapis", JSON.stringify(dataTerapis));
+    renderDropdownTerapis();
+    renderTerapisList();
+  }
+}
+
+function hapusTerapis(index) {
+  if (confirm("Yakin hapus terapis ini?")) {
+    dataTerapis.splice(index, 1);
+    localStorage.setItem("terapis", JSON.stringify(dataTerapis));
+    renderDropdownTerapis();
+    renderTerapisList();
+  }
+}

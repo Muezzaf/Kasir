@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KasirQ - Moka Lite</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <h2>KasirQ</h2>
+      <button id="addProductBtn">+ Tambah Produk</button>
+      <ul class="kategori">
+        <li>Minuman</li>
+        <li>Makanan</li>
+        <li>Snack</li>
+      </ul>
+    </aside>
+
+    <main class="product-list">
+      <h2>Daftar Produk</h2>
+      <div class="produk-grid" id="productGrid">
+        <!-- Produk dimunculkan lewat JS -->
+      </div>
+    </main>
+
+    <aside class="cart">
+      <h2>Keranjang</h2>
+      <div id="cartItems"></div>
+      <hr>
+      <div class="total">
+        <p>Total: <span id="totalHarga">Rp 0</span></p>
+        <button id="bayarBtn">Bayar</button>
+      </div>
+    </aside>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

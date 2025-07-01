@@ -1,0 +1,86 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  background: #f4f4f4;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 200px;
+  background: #2c3e50;
+  color: white;
+  padding: 20px;
+}
+
+.sidebar h2 {
+  margin-bottom: 20px;
+}
+
+.sidebar button {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  background: #27ae60;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.kategori li {
+  margin: 10px 0;
+  list-style: none;
+  cursor: pointer;
+}
+
+.product-list {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.produk-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 15px;
+}
+
+.produk-item {
+  background: white;
+  padding: 10px;
+  border: 1px solid #ccc;
+  text-align: center;
+  cursor: pointer;
+}
+
+.cart {
+  width: 250px;
+  background: #ecf0f1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.cart h2 {
+  margin-bottom: 15px;
+}
+
+.total {
+  margin-top: 20px;
+}
+
+#bayarBtn {
+  background: #2980b9;
+  color: white;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+}

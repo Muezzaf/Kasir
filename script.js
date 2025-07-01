@@ -20,6 +20,7 @@ function simpanProdukBaru() {
 
 function renderProduk(kategori = 'all') {
   const grid = document.getElementById("productGrid");
+  if (!grid) return;
   grid.innerHTML = "";
   let list = kategori === 'all' ? produkList : produkList.filter(p => p.kategori === kategori);
 
@@ -75,6 +76,7 @@ function simpanTerapisBaru() {
 
 function renderTerapis() {
   const box = document.getElementById("daftarTerapis");
+  if (!box) return;
   box.innerHTML = "";
   terapisList.forEach((terapis, index) => {
     const item = document.createElement("div");
@@ -92,6 +94,7 @@ function renderTerapis() {
 
 function renderDropdownTerapis() {
   const select = document.getElementById("namaTerapis");
+  if (!select) return;
   select.innerHTML = "<option value=''>Pilih Terapis</option>";
   terapisList.forEach((t, i) => {
     const opt = document.createElement("option");
@@ -124,37 +127,40 @@ function hapusTerapis(index) {
 
 function toggleFormEditTerapis() {
   const form = document.getElementById("formEditTerapis");
-  form.style.display = form.style.display === "none" ? "block" : "none";
+  if (form) form.style.display = form.style.display === "none" ? "block" : "none";
 }
 
 // === Bayar ===
-document.getElementById("bayarBtn").addEventListener("click", () => {
-  const pelanggan = document.getElementById("namaPelanggan").value;
-  const indexTerapis = document.getElementById("namaTerapis").value;
-  if (!pelanggan || keranjang.length === 0 || indexTerapis === '') return alert("Lengkapi data terlebih dahulu");
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("bayarBtn")?.addEventListener("click", () => {
+    const pelanggan = document.getElementById("namaPelanggan").value;
+    const indexTerapis = document.getElementById("namaTerapis").value;
+    if (!pelanggan || keranjang.length === 0 || indexTerapis === '') return alert("Lengkapi data terlebih dahulu");
 
-  const terapis = terapisList[indexTerapis];
-  const total = keranjang.reduce((acc, item) => acc + item.harga, 0);
+    const terapis = terapisList[indexTerapis];
+    const total = keranjang.reduce((acc, item) => acc + item.harga, 0);
 
-  const transaksi = {
-    tanggal: new Date().toLocaleString("id-ID"),
-    pelanggan,
-    terapis: terapis.nama,
-    komisi: (terapis.komisi / 100) * total,
-    total,
-    layanan: [...keranjang]
-  };
+    const transaksi = {
+      tanggal: new Date().toLocaleString("id-ID"),
+      pelanggan,
+      terapis: terapis.nama,
+      komisi: (terapis.komisi / 100) * total,
+      total,
+      layanan: [...keranjang]
+    };
 
-  riwayat.push(transaksi);
-  localStorage.setItem("riwayatTransaksi", JSON.stringify(riwayat));
-  keranjang = [];
-  renderKeranjang();
-  document.getElementById("namaPelanggan").value = "";
-  cetakStruk(transaksi);
+    riwayat.push(transaksi);
+    localStorage.setItem("riwayatTransaksi", JSON.stringify(riwayat));
+    keranjang = [];
+    renderKeranjang();
+    document.getElementById("namaPelanggan").value = "";
+    cetakStruk(transaksi);
+  });
 });
 
 function cetakStruk(data) {
   const box = document.getElementById("isiStruk");
+  if (!box) return;
   box.innerHTML = `
     <h3>STRUK PEMBAYARAN</h3>
     <p>${data.tanggal}</p>
@@ -179,15 +185,22 @@ function filterKategori(kat) {
 }
 
 // === Riwayat ===
-document.getElementById("lihatRiwayatBtn").addEventListener("click", () => {
-  const box = document.getElementById("riwayatList");
-  document.getElementById("riwayatBox").style.display = "block";
-  box.innerHTML = riwayat.map(r => `
-    <div>
-      <strong>${r.tanggal}</strong> - ${r.pelanggan}<br>
-      Terapis: ${r.terapis} - Total: Rp${r.total.toLocaleString("id-ID")}
-    </div>
-  `).join('');
+document.addEventListener("DOMContentLoaded", () => {
+  renderTerapis();
+  renderDropdownTerapis();
+  renderProduk();
+
+  document.getElementById("lihatRiwayatBtn")?.addEventListener("click", () => {
+    const box = document.getElementById("riwayatList");
+    if (!box) return;
+    document.getElementById("riwayatBox").style.display = "block";
+    box.innerHTML = riwayat.map(r => `
+      <div>
+        <strong>${r.tanggal}</strong> - ${r.pelanggan}<br>
+        Terapis: ${r.terapis} - Total: Rp${r.total.toLocaleString("id-ID")}
+      </div>
+    `).join('');
+  });
 });
 
 function tutupRiwayat() {
@@ -213,10 +226,3 @@ function exportExcel() {
   link.download = 'riwayat-transaksi.csv';
   link.click();
 }
-
-// === Init ===
-document.addEventListener("DOMContentLoaded", () => {
-  renderTerapis();
-  renderDropdownTerapis();
-  renderProduk();
-});

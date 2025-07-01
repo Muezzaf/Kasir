@@ -1,7 +1,18 @@
+// Final script.js dengan komisi per terapis dinamis dan tampilan harga Rp50.000
+
+function formatRupiah(angka) {
+  return 'Rp' + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
 let products = JSON.parse(localStorage.getItem("produk")) || [
   { id: 1, name: "Refleksi 60 Menit", price: 70000, kategori: "Refleksi" },
   { id: 2, name: "Full Body Massage 90 Menit", price: 120000, kategori: "Full Body Massage" },
   { id: 3, name: "Totok Wajah", price: 50000, kategori: "Other Service" },
+];
+
+let dataTerapis = JSON.parse(localStorage.getItem("terapis")) || [
+  { nama: "Terapis A", komisi: 0.4 },
+  { nama: "Terapis B", komisi: 0.35 }
 ];
 
 const cart = [];
@@ -16,7 +27,7 @@ function renderProducts() {
     item.className = "produk-item";
     item.innerHTML = `
       <h4>${prod.name}</h4>
-      <p>Rp ${prod.price}</p>
+      <p>${formatRupiah(prod.price)}</p>
       <small>${prod.kategori}</small><br>
       <button class="edit-btn" onclick="editProduk(${prod.id})">Edit</button>
       <button class="hapus-btn" onclick="hapusProduk(${prod.id})">Hapus</button>
@@ -40,15 +51,14 @@ function updateCart() {
   cartItems.innerHTML = "";
 
   let total = 0;
-
   cart.forEach((item, index) => {
     total += item.price;
     const div = document.createElement("div");
-    div.innerHTML = `${item.name} - Rp ${item.price} <button onclick="hapusDariCart(${index})">❌</button>`;
+    div.innerHTML = `${item.name} - ${formatRupiah(item.price)} <button onclick="hapusDariCart(${index})">❌</button>`;
     cartItems.appendChild(div);
   });
 
-  document.getElementById("totalHarga").textContent = "Rp " + total;
+  document.getElementById("totalHarga").textContent = formatRupiah(total);
 }
 
 function hapusDariCart(index) {
@@ -103,18 +113,38 @@ function filterKategori(kat) {
   if (aktif) aktif.classList.add('active');
 }
 
-document.getElementById("addProductBtn").addEventListener("click", () => {
-  const form = document.getElementById("formTambahProduk");
-  form.style.display = form.style.display === "none" ? "block" : "none";
-});
+function renderDropdownTerapis() {
+  const select = document.getElementById("namaTerapis");
+  select.innerHTML = "<option value=''>--Pilih Terapis--</option>";
+  dataTerapis.forEach(t => {
+    select.innerHTML += `<option value="${t.nama}">${t.nama}</option>`;
+  });
+}
+
+function getKomisiTerapis(nama) {
+  const t = dataTerapis.find(t => t.nama === nama);
+  return t ? t.komisi : 0.4;
+}
+
+function simpanTerapisBaru() {
+  const nama = document.getElementById("namaTerapisBaru").value.trim();
+  const persen = parseFloat(document.getElementById("komisiTerapisBaru").value);
+  if (!nama || isNaN(persen)) return alert("Isi nama & komisi dengan benar.");
+  dataTerapis.push({ nama, komisi: persen / 100 });
+  localStorage.setItem("terapis", JSON.stringify(dataTerapis));
+  renderDropdownTerapis();
+  document.getElementById("namaTerapisBaru").value = "";
+  document.getElementById("komisiTerapisBaru").value = "";
+}
 
 document.getElementById("bayarBtn").addEventListener("click", () => {
   const nama = document.getElementById("namaPelanggan").value.trim();
   const terapis = document.getElementById("namaTerapis").value.trim();
   const total = cart.reduce((a, b) => a + b.price, 0);
-  const komisi = Math.floor(0.4 * total); // fix 40% komisi
+  const persen = getKomisiTerapis(terapis);
+  const komisi = Math.floor(persen * total);
 
-  if (!nama || !terapis) return alert("Isi nama pelanggan & terapis dulu ya.");
+  if (!nama || !terapis) return alert("Isi nama pelanggan & pilih terapis dulu.");
   if (cart.length === 0) return alert("Keranjang masih kosong!");
 
   simpanTransaksi(nama, terapis, cart, total, komisi);
@@ -143,12 +173,17 @@ function tampilkanStruk(terapis, total) {
   const container = document.getElementById("isiStruk");
   let html = `<h3>Struk Layanan</h3>`;
   html += `<p>🧍‍♂️ Terapis: ${terapis}</p>`;
-  html += `<p>💰 Total: Rp ${total}</p>`;
+  html += `<p>💰 Total: ${formatRupiah(total)}</p>`;
   container.innerHTML = html;
   document.getElementById("popupStruk").style.display = "block";
 }
 
 document.getElementById("lihatRiwayatBtn").addEventListener("click", tampilkanRiwayat);
+
+document.addEventListener("DOMContentLoaded", () => {
+  renderProducts();
+  renderDropdownTerapis();
+});
 
 function tampilkanRiwayat() {
   const box = document.getElementById("riwayatBox");
@@ -159,8 +194,8 @@ function tampilkanRiwayat() {
     list.innerHTML = "<p>Belum ada transaksi.</p>";
   } else {
     data.reverse().forEach(tx => {
-      const items = tx.layanan.map(b => `${b.name} (Rp ${b.price})`).join(", ");
-      list.innerHTML += `<p><strong>${tx.waktu}</strong><br>👤 ${tx.pelanggan}<br>🧍‍♂️ ${tx.terapis}<br>${items}<br><strong>Total:</strong> Rp ${tx.total} - Komisi: Rp ${tx.komisi}</p>`;
+      const items = tx.layanan.map(b => `${b.name} (${formatRupiah(b.price)})`).join(", ");
+      list.innerHTML += `<p><strong>${tx.waktu}</strong><br>👤 ${tx.pelanggan}<br>🧍‍♂️ ${tx.terapis}<br>${items}<br><strong>Total:</strong> ${formatRupiah(tx.total)} - Komisi: ${formatRupiah(tx.komisi)}</p>`;
     });
   }
   box.style.display = "block";
@@ -171,8 +206,8 @@ function exportExcel() {
   if (riwayat.length === 0) return alert("Belum ada transaksi!");
   let html = `<table border='1'><tr><th>Waktu</th><th>Pelanggan</th><th>Terapis</th><th>Layanan</th><th>Total</th><th>Komisi</th></tr>`;
   riwayat.forEach(tx => {
-    const items = tx.layanan.map(b => `${b.name} (Rp ${b.price})`).join(", ");
-    html += `<tr><td>${tx.waktu}</td><td>${tx.pelanggan}</td><td>${tx.terapis}</td><td>${items}</td><td>Rp ${tx.total}</td><td>Rp ${tx.komisi}</td></tr>`;
+    const items = tx.layanan.map(b => `${b.name} (${formatRupiah(b.price)})`).join(", ");
+    html += `<tr><td>${tx.waktu}</td><td>${tx.pelanggan}</td><td>${tx.terapis}</td><td>${items}</td><td>${formatRupiah(tx.total)}</td><td>${formatRupiah(tx.komisi)}</td></tr>`;
   });
   html += "</table>";
   const blob = new Blob([html], { type: "application/vnd.ms-excel" });
@@ -201,5 +236,3 @@ function logout() {
   localStorage.removeItem("kasir");
   window.location.href = "login.html";
 }
-
-renderProducts();

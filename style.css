@@ -3,79 +3,97 @@
   padding: 0;
   box-sizing: border-box;
 }
-
 body {
   font-family: sans-serif;
   background: #f4f4f4;
 }
-
 .container {
   display: flex;
   height: 100vh;
 }
-
 .sidebar {
   width: 200px;
   background: #2c3e50;
   color: white;
   padding: 20px;
 }
-
 .sidebar h2 {
   margin-bottom: 20px;
 }
-
 .sidebar button {
   width: 100%;
   padding: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   background: #27ae60;
   color: white;
   border: none;
   cursor: pointer;
 }
-
 .kategori li {
   margin: 10px 0;
   list-style: none;
   cursor: pointer;
 }
-
+.kategori li:hover {
+  text-decoration: underline;
+}
+.kategori li.active {
+  font-weight: bold;
+  color: #1abc9c;
+}
+.form-tambah {
+  background: #34495e;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+.form-tambah input, .form-tambah select {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px;
+  border: none;
+}
 .product-list {
   flex: 1;
   padding: 20px;
   overflow-y: auto;
 }
-
 .produk-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   gap: 15px;
 }
-
 .produk-item {
   background: white;
   padding: 10px;
   border: 1px solid #ccc;
   text-align: center;
+}
+.produk-item button {
+  margin-top: 5px;
+  padding: 5px;
+  width: 45%;
+  font-size: 12px;
+  border: none;
   cursor: pointer;
 }
-
+.edit-btn {
+  background: #f39c12;
+  color: white;
+}
+.hapus-btn {
+  background: #e74c3c;
+  color: white;
+}
 .cart {
   width: 250px;
   background: #ecf0f1;
   padding: 20px;
   overflow-y: auto;
 }
-
-.cart h2 {
-  margin-bottom: 15px;
-}
-
 .total {
   margin-top: 20px;
 }
-
 #bayarBtn {
   background: #2980b9;
   color: white;
@@ -84,3 +102,39 @@ body {
   border: none;
   cursor: pointer;
 }
+.riwayat-box, .struk-popup {
+  position: fixed;
+  top: 10%;
+  left: 30%;
+  width: 40%;
+  background: white;
+  border: 1px solid #aaa;
+  padding: 20px;
+  z-index: 999;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.struk-popup button,
+.riwayat-box button {
+  margin-top: 10px;
+  margin-right: 10px;
+  padding: 8px 10px;
+  border: none;
+  background: #2c3e50;
+  color: white;
+  cursor: pointer;
+}
+.struk {
+  font-size: 14px;
+  line-height: 1.6;
+}
+@media print {
+  body * { visibility: hidden; }
+  .struk, .struk * {
+    visibility: visible;
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+  }
+  }

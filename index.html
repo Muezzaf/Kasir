@@ -46,9 +46,12 @@
 
   <section>
     <h2>Kelola Terapis</h2>
-    <input type="text" id="namaTerapisBaru" placeholder="Nama Terapis">
-    <input type="number" id="komisiTerapisBaru" placeholder="Komisi (%)">
-    <button onclick="simpanTerapisBaru()">Tambah Terapis</button>
+    <button onclick="toggleFormEditTerapis()">Kelola Terapis</button>
+    <div id="formEditTerapis" style="display:none; margin-top:10px;">
+      <input type="text" id="namaTerapisBaru" placeholder="Nama Terapis">
+      <input type="number" id="komisiTerapisBaru" placeholder="Komisi (%)">
+      <button onclick="simpanTerapisBaru()">Tambah Terapis</button>
+    </div>
     <div id="daftarTerapis"></div>
   </section>
 

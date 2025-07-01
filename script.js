@@ -1,7 +1,7 @@
 let products = JSON.parse(localStorage.getItem("produk")) || [
-  { id: 1, name: "Es Teh", price: 5000, kategori: "Minuman" },
-  { id: 2, name: "Nasi Goreng", price: 15000, kategori: "Makanan" },
-  { id: 3, name: "Keripik", price: 7000, kategori: "Snack" },
+  { id: 1, name: "60 Menit", price: 80.000, kategori: "Refleksi" },
+  { id: 2, name: "60 Menit", price: 100.000, kategori: "Full Body Massage" },
+  { id: 3, name: "Kop/Kerik", price: 50.000, kategori: "Other Service" },
 ];
 
 const cart = [];
@@ -16,7 +16,7 @@ function renderProducts() {
     item.className = "produk-item";
     item.innerHTML = `
       <h4>${prod.name}</h4>
-      <p>Rp ${prod.price}</p>
+      <p>Rp.${prod.price}</p>
       <small>${prod.kategori}</small><br>
       <button class="edit-btn" onclick="editProduk(${prod.id})">Edit</button>
       <button class="hapus-btn" onclick="hapusProduk(${prod.id})">Hapus</button>

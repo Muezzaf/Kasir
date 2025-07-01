@@ -179,6 +179,13 @@ function tutupRiwayat() {
   document.getElementById("riwayatBox").style.display = "none";
 }
 
+function hapusSemuaRiwayat() {
+  if (confirm("Yakin mau hapus semua riwayat transaksi?")) {
+    localStorage.removeItem("riwayat");
+    document.getElementById("riwayatList").innerHTML = "<p>Belum ada transaksi.</p>";
+  }
+}
+
 function logout() {
   localStorage.removeItem("kasir");
   window.location.href = "login.html";

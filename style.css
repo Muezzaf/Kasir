@@ -87,30 +87,30 @@ button:hover {
   margin-top: 10px;
 }
 
-.terapis-item {
-  background: #fff;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-bottom: 5px;
+#daftarTerapis .terapis-item {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 8px;
+  margin-bottom: 5px;
+  border-radius: 5px;
 }
 
-.terapis-item span {
+#daftarTerapis .terapis-item span {
   flex: 1;
 }
 
-.terapis-item button {
-  margin-left: 5px;
-  background-color: #e74c3c;
-}
-
-.terapis-item button.edit {
+#daftarTerapis .terapis-item button {
   background-color: #f39c12;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 5px;
 }
 
-.terapis-item button:hover {
-  opacity: 0.9;
+#daftarTerapis .terapis-item button.delete {
+  background-color: #e74c3c;
 }

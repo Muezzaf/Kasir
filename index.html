@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>KasirQ</title>
+  <title>Kasir Refleksi</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -14,11 +14,11 @@
 
   <div class="container">
     <aside class="sidebar">
-      <h2>KasirQ</h2>
-      <button id="addProductBtn">+ Tambah Produk</button>
+      <h2>Kasir Refleksi</h2>
+      <button id="addProductBtn">+ Tambah Layanan</button>
       <div class="form-tambah" id="formTambahProduk" style="display:none;">
-        <h3>Tambah Produk</h3>
-        <input type="text" id="namaProduk" placeholder="Nama Produk">
+        <h3>Tambah Layanan</h3>
+        <input type="text" id="namaProduk" placeholder="Nama Layanan">
         <input type="number" id="hargaProduk" placeholder="Harga">
         <select id="kategoriProduk">
           <option value="Refleksi">Refleksi</option>
@@ -29,10 +29,10 @@
       </div>
       <hr style="margin: 20px 0;">
       <ul class="kategori">
-        <li onclick="filterKategori('all')">Semua</li>
-        <li onclick="filterKategori('Refleksi')">Refleksi</li>
-        <li onclick="filterKategori('Full Body Massage')">Full Body Massage</li>
-        <li onclick="filterKategori('Other Service')">Other Service</li>
+        <li onclick="filterKategori('all')">📦 Semua</li>
+        <li onclick="filterKategori('Refleksi')">🦶 Refleksi</li>
+        <li onclick="filterKategori('Full Body Massage')">💆 Full Body</li>
+        <li onclick="filterKategori('Other Service')">🛠️ Lainnya</li>
       </ul>
       <hr style="margin: 20px 0;">
       <button id="lihatRiwayatBtn">📜 Riwayat Transaksi</button>
@@ -40,12 +40,15 @@
     </aside>
 
     <main class="product-list">
-      <h2>Daftar Produk</h2>
+      <h2>Daftar Layanan</h2>
       <div class="produk-grid" id="productGrid"></div>
     </main>
 
     <aside class="cart">
       <h2>Keranjang</h2>
+      <input type="text" id="namaPelanggan" placeholder="Nama Pelanggan"><br>
+      <input type="text" id="namaTerapis" placeholder="Nama Terapis"><br>
+      <input type="text" id="durasiLayanan" placeholder="Durasi (misal: 60 Menit)"><br><br>
       <div id="cartItems"></div>
       <hr>
       <div class="total">

@@ -1,73 +1,144 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aplikasi Kasir Refleksi</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <h1>Kasir Refleksi</h1>
+body {
+  font-family: sans-serif;
+  padding: 20px;
+  background-color: #f2f2f2;
+  max-width: 900px;
+  margin: 0 auto;
+}
 
-  <section>
-    <h2>Layanan</h2>
-    <ul class="kategori">
-      <li onclick="filterKategori('all')" class="active">Semua</li>
-      <li onclick="filterKategori('Refleksi')">Refleksi</li>
-      <li onclick="filterKategori('Full Body Massage')">Full Body Massage</li>
-      <li onclick="filterKategori('Other Service')">Other Service</li>
-    </ul>
-    <div id="productGrid"></div>
-    <button id="addProductBtn" onclick="document.getElementById('formTambahProduk').style.display='block'">Tambah Layanan</button>
-    <div id="formTambahProduk" style="display: none;">
-      <input type="text" id="namaProduk" placeholder="Nama Layanan">
-      <input type="number" id="hargaProduk" placeholder="Harga">
-      <select id="kategoriProduk">
-        <option value="Refleksi">Refleksi</option>
-        <option value="Full Body Massage">Full Body Massage</option>
-        <option value="Other Service">Other Service</option>
-      </select>
-      <button onclick="simpanProdukBaru()">Simpan</button>
-    </div>
-  </section>
+h1, h2, h3 {
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
 
-  <section>
-    <h2>Keranjang</h2>
-    <div id="cartItems"></div>
-    <h3>Total: <span id="totalHarga">Rp0</span></h3>
-    <label for="namaTerapis">Terapis</label>
-    <select id="namaTerapis"></select>
+section {
+  margin-bottom: 30px;
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
 
-    <label for="namaPelanggan">Nama Pelanggan</label>
-    <input type="text" id="namaPelanggan" placeholder="Nama pelanggan">
+ul.kategori {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
 
-    <button id="bayarBtn">Bayar</button>
-  </section>
+ul.kategori li {
+  padding: 6px 12px;
+  background-color: #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.2s;
+}
 
-  <section>
-    <h2>Kelola Terapis</h2>
-    <input type="text" id="namaTerapisBaru" placeholder="Nama Terapis">
-    <input type="number" id="komisiTerapisBaru" placeholder="Komisi (%)">
-    <button onclick="simpanTerapisBaru()">Tambah Terapis</button>
-    <div id="daftarTerapis"></div>
-  </section>
+ul.kategori li.active,
+ul.kategori li:hover {
+  background-color: #2c3e50;
+  color: white;
+}
 
-  <section>
-    <h2>Riwayat</h2>
-    <button id="lihatRiwayatBtn">Lihat Riwayat</button>
-    <button onclick="hapusSemuaRiwayat()">Hapus Semua</button>
-    <button onclick="exportExcel()">Export ke Excel</button>
-    <div id="riwayatBox" style="display: none;">
-      <div id="riwayatList"></div>
-      <button onclick="tutupRiwayat()">Tutup</button>
-    </div>
-  </section>
+#productGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+}
 
-  <div id="popupStruk" style="display:none;">
-    <div id="isiStruk"></div>
-    <button onclick="tutupStruk()">Tutup Struk</button>
-  </div>
+.produk-item {
+  background: white;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-align: center;
+}
 
-  <script src="script.js"></script>
-</body>
-</html>
+input, select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+button {
+  padding: 8px 12px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+#cartItems div {
+  margin-bottom: 5px;
+}
+
+#popupStruk {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  background: white;
+  transform: translate(-50%, -50%);
+  border: 2px solid #333;
+  padding: 20px;
+  z-index: 999;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  max-width: 400px;
+  width: 100%;
+  border-radius: 8px;
+}
+
+#popupStruk button {
+  margin-top: 15px;
+  width: 100%;
+}
+
+#daftarTerapis {
+  margin-top: 10px;
+}
+
+#daftarTerapis .terapis-item {
+  display: flex;
+  justify-content: space-between;
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 8px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  align-items: center;
+}
+
+#daftarTerapis .terapis-item span {
+  flex: 1;
+}
+
+#daftarTerapis .terapis-item button {
+  background-color: #f39c12;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 5px;
+  transition: 0.2s;
+}
+
+#daftarTerapis .terapis-item button.delete {
+  background-color: #e74c3c;
+}
+
+#daftarTerapis .terapis-item button:hover {
+  opacity: 0.9;
+}

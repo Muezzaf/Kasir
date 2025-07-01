@@ -38,14 +38,22 @@ function addToCart(product) {
 function updateCart() {
   const cartItems = document.getElementById("cartItems");
   cartItems.innerHTML = "";
+
   let total = 0;
-  cart.forEach(item => {
+
+  cart.forEach((item, index) => {
     total += item.price;
     const div = document.createElement("div");
-    div.textContent = `${item.name} - Rp ${item.price}`;
+    div.innerHTML = `${item.name} - Rp ${item.price} <button onclick="hapusDariCart(${index})">❌</button>`;
     cartItems.appendChild(div);
   });
+
   document.getElementById("totalHarga").textContent = "Rp " + total;
+}
+
+function hapusDariCart(index) {
+  cart.splice(index, 1);
+  updateCart();
 }
 
 function simpanProdukBaru() {

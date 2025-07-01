@@ -175,6 +175,7 @@ function tampilkanStruk(items, total) {
 function tutupStruk() {
   document.getElementById("popupStruk").style.display = "none";
 }
+
 function tutupRiwayat() {
   document.getElementById("riwayatBox").style.display = "none";
 }

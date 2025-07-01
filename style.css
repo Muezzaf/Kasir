@@ -1,4 +1,4 @@
-/* Moka POS Inspired Style */
+/* Moka POS Inspired Layout Style */
 body {
   font-family: 'Segoe UI', Roboto, sans-serif;
   margin: 0;
@@ -7,21 +7,35 @@ body {
   color: #333;
 }
 
-h1, h2, h3 {
-  color: #2c3e50;
-  margin-top: 20px;
+h1 {
+  background-color: #ffffff;
+  padding: 20px;
+  margin: 0;
+  font-size: 24px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+main {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
 }
 
 section {
-  margin: 20px;
-  padding: 20px;
+  flex: 1;
+  min-width: 300px;
   background: #fff;
+  padding: 20px;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
 input, select, button {
-  margin: 5px 0;
+  margin: 8px 0;
   padding: 10px;
   font-size: 14px;
   width: 100%;
@@ -46,23 +60,32 @@ button:hover {
 .produk-item {
   background: #ffffff;
   border: 1px solid #ddd;
-  margin: 10px;
+  margin: 10px 5px;
   padding: 15px;
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  width: 180px;
+  width: calc(33.333% - 20px);
   display: inline-block;
   vertical-align: top;
+  box-sizing: border-box;
+}
+
+.kategori {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
 }
 
 .kategori li {
-  display: inline-block;
-  margin-right: 15px;
-  padding: 6px 12px;
+  padding: 8px 16px;
   background: #e0e0e0;
   border-radius: 20px;
   cursor: pointer;
   font-weight: 500;
+  transition: 0.2s;
 }
 
 .kategori li.active {
@@ -133,4 +156,19 @@ label {
   border-left: 4px solid #2d9cdb;
   border-radius: 6px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+@media screen and (max-width: 768px) {
+  .produk-item {
+    width: calc(50% - 20px);
+  }
+  main {
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .produk-item {
+    width: 100%;
+  }
 }
